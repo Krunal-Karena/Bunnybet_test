@@ -12,6 +12,7 @@ import SignUp from './signUp'
 import { changeUser } from '../../reducers/auth'
 import { isEmpty, setCookie } from '../../utils/utils'
 import Loader from '../partials/loader'
+import { ethers } from 'ethers'
 
 function Sign(props) {
     const {lang, socket} = props
@@ -28,6 +29,7 @@ function Sign(props) {
     const [checkboxOne, setCheckboxOne] = useState(false)
     const [loaded, setLoaded] = useState(true)
     const [date, setDate] = useState('')
+    const [walletAddress, setWalletAddress] = useState("");
 
     function handleClick(choice){
         setErrorEmail(false)
@@ -49,6 +51,10 @@ function Sign(props) {
         setErrorUser(false)
         setErrorPass(false)
         setErrorAgree(false)
+        if(!walletAddress){
+            handleErrors("error", "wallet_connect_error")
+            return;
+        }
         if(!checkPayload(data.payload)){
             setLoaded(false)
             socket.emit(data.emit, data.payload)
@@ -125,6 +131,8 @@ function Sign(props) {
         }
         const handleSignUpRead = (data)=>{
             setLoaded(true)
+            console.log("handleSignUpRead : ", data);
+            
             if(data && data.obj && Object.keys(data.obj).length>0){
                 dispatch(changeUser(data.obj))
                 if(!isEmpty(data.obj.uuid)){
@@ -159,7 +167,7 @@ function Sign(props) {
             open: true,
             template: template,
             title: "error",
-            data: translate({lang: lang, error})
+            data: translate({lang: lang,info: error})
         }                
         dispatch(changePopup(payload))
     }
@@ -170,9 +178,39 @@ function Sign(props) {
         setDate(my_date)
     }
     
+    // Connect to MetaMask
+    async function connectWallet() {
+        if (window.ethereum) {
+            try {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.send("eth_requestAccounts", []);
+                setWalletAddress(accounts[0]);
+            } catch (err) {
+                handleErrors("error", err.message);
+            }
+        } else {
+            handleErrors("error", "metamask_not_detected");
+        }
+    }
+
+    // Check if wallet is already connected
+    async function checkWalletConnection() {
+        if (window.ethereum) {
+            try {
+                const provider = new ethers.BrowserProvider(window.ethereum);
+                const accounts = await provider.send("eth_accounts", []);
+                if (accounts.length > 0) {
+                setWalletAddress(accounts[0]);
+                }
+            } catch (err) {
+                handleErrors("error", err.message);
+            }
+        }
+    }
 
     useEffect(() => {
         handleDate()
+        checkWalletConnection()
     }, [])
 
     return <>
@@ -199,7 +237,7 @@ function Sign(props) {
                                                     <li id="signin_tab" className={signIn} onClick={()=>{handleClick('signIn')}}><span>{translate({lang: lang, info: "sign_in"})}</span></li>
                                                     <li id="signup_tab" className={signUp} onClick={()=>{handleClick('signUp')}}><span>{translate({lang: lang, info: "sign_up"})}</span></li>
                                                 </ul>
-                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} /> : 
+                                                {visible === "signIn" ? <SignIn signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} walletAddress={walletAddress} connectWallet={connectWallet}/> : 
                                                 <SignUp signSubmit={(e)=>{signSubmit(e)}} lang={lang} socket={socket} />}
                                             </div>
                                             <div className="sign_extra_info">

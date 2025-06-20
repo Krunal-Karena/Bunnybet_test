@@ -55,6 +55,10 @@ var word_bank = {
     country: "País",
     city: "Ciudad",
     your_streak: "Cuántos días seguidos has jugado",
+    wallet_connect_error: "Por favor, conecta primero tu billetera MetaMask.",
+    metamask_not_detected: "MetaMask no detectado. Por favor, instala MetaMask.",
+    connect_wallet: "Conectar billetera MetaMask",
+    wallet_address: "Dirección de la billetera",
 
     exit_salon: "Salir del salón",
     salon_subtitle: "Bienvenido al salón",

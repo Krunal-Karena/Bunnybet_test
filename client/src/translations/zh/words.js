@@ -55,6 +55,10 @@ var word_bank = {
     country: "国家",
     city: "城市",
     your_streak: "你连续玩了多少天",
+    wallet_connect_error: "请先连接您的MetaMask钱包。",
+    metamask_not_detected: "未检测到MetaMask。请安装MetaMask。",
+    connect_wallet: "连接MetaMask钱包",
+    wallet_address: "钱包地址",
 
     exit_salon: "退出沙龙",
     salon_subtitle: "欢迎来到沙龙",

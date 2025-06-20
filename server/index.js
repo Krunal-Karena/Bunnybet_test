@@ -3,7 +3,11 @@ const app = express()
 const bodyParser = require('body-parser')
 
 var http = require('http').createServer(app)
-var io = require('socket.io')(http)
+var io = require('socket.io')(http, {
+  cors: {
+    origin: "http://localhost:8088", // Frontend origin
+  }
+})
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false })) 
@@ -55,7 +59,7 @@ var constants = require('./var/constants')
 var database_config = constants.DATABASE[0]
 
 io.on('connection', function(socket) {
-  socket.on('signin_send', (data) => {  
+  socket.on('signin_send', (data) => { 
     database_config.sql = "SELECT * FROM casino_user;"
     database_config.sql += "SELECT * FROM login_user;"
     database_config.name = "db01"
@@ -132,13 +136,14 @@ io.on('connection', function(socket) {
     database_config.sql = 'SELECT * FROM casino_user WHERE email = "' + data.email + '"'
     database_config.name = "db02"
 		database(database_config).then(function(result){
+        
       if(result && result.length == 0){
         //no user was found --> new user --> he must sign up
         users_array = result
         let uuid = crypto.randomBytes(20).toString('hex')
         let device = get_device(socket.request.headers) // 0 = computer, 1 = mobile, 2 = other
-  
-        //emit
+        
+        //emit 
         let obj = {
           uuid: uuid, 
           user: data.user, 

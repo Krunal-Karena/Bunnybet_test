@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 
 function SignIn(props) {
-    const {lang} = props
+    const {lang,walletAddress, connectWallet} = props
     const [user, setUser] = useState('')
     const [pass, setPass] = useState('')
     const [visible, setVisible] = useState(false)
@@ -35,6 +35,21 @@ function SignIn(props) {
 
     return <div className="sign_in_container">
         <Form>
+            <div style={{ marginBottom: 8 }}>
+                {walletAddress ? (
+                    <div className="alert alert-success">
+                    {translate({ lang: lang, info: "wallet_address" })} : {walletAddress}
+                    </div>
+                ) : (
+                    <Button
+                        type="button"
+                        className="mybutton button_fullcolor"
+                        onClick={connectWallet}
+                    >
+                        {translate({ lang: lang, info: "connect_wallet" })}
+                    </Button>
+                )}
+            </div>
             <Row>
                 <Col sm={4} className="label_container d-none d-sm-block">
                     <div className="label">{translate({lang: lang, info: "user"})}</div>

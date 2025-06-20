@@ -55,6 +55,10 @@ var word_bank = {
     country: "Țară",
     city: "Oraș",  
     your_streak: "Câte zile la rând ai jucat",
+    wallet_connect_error: "Vă rugăm să conectați mai întâi portofelul MetaMask.",
+    metamask_not_detected: "MetaMask nu a fost detectat. Vă rugăm să instalați MetaMask.",
+    connect_wallet: "Conectați portofelul MetaMask",
+    wallet_address: "Adresă portofel",
 
     exit_salon: "Ieși din salon",
     salon_subtitle: "Bine ai venit în salon",

@@ -245,7 +245,7 @@ textarea:focus, input:focus{
   max-width: 205px;
 }
 .sign_container ul{
-  margin-bottom: var(--padding_big);
+  /* margin-bottom: var(--padding_big); */
 }
 .sign_container ul li{
   padding: var(--padding_small);
@@ -267,9 +267,9 @@ textarea:focus, input:focus{
   border-radius: 0px var(--radius) var(--radius) 0px;
 }
 .sign_container button{
-  margin-top: var(--padding);
+  margin-top: var(--padding_small);
   border-radius: var(--padding);
-  height: 25px;
+  height: auto;
   width: 100%;
   max-width: 150px;
 }

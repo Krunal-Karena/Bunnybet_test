@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run build\" \"npm run server\"",
     "dev": "concurrently \"npm run build\" \"npm run server:dev\"",
     "server": "cross-env NODE_ENV=production node server/index.js",
-    "server:dev": "cross-env NODE_ENV=development node server/index.js",
+    "server:dev": "cross-env NODE_ENV=development nodemon server/index.js",
     "build": "npm install && cd client && npm install && npm run build"
   },
   "keywords": [
@@ -40,6 +40,7 @@
     "jsonlogs": "^7.5.5",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
+    "mysql2": "^3.14.1",
     "nodemailer": "^6.9.4",
     "nodemon": "^2.0.22",
     "path": "^0.12.7",
